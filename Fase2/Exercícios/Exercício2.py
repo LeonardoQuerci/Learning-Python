@@ -40,7 +40,7 @@ class ContaCorrente(ContaBancaria):
         self.limite = limite
     
     def sacar(self, valor: float) -> None:
-        if valor < 0 :
+        if valor <= 0 :
             print("Valor inválido")
             return
         if valor >self.limite +self._saldo:
@@ -62,7 +62,7 @@ class ContaPoupanca(ContaBancaria):
         super().__init__(numero, titular, saldo)
         self.rendimento = rendimento
     def sacar(self, valor: float) -> None:
-        if valor < 0 :
+        if valor <= 0 :
             print("Não é possivel realizar a operação poi o valor é menor do que zero")
             return
         if self._saldo <valor:
@@ -76,5 +76,23 @@ class ContaPoupanca(ContaBancaria):
         self._extrato.append(f"Rendimento de R${valorRendimento:.2f}")
 
     def __str__(self):
-        return f"[Poupança] {super().__str__()} | Rendimento: {self.rendimento:.2f}"
+        return f"[Poupança] {super().__str__()} | Rendimento: {self.rendimento:.2f}% a.m."
+    
+# Testes ContaCorrente
+cc = ContaCorrente(1001, "Ana", 1000.0)
+cc.depositar(500.0)
+cc.sacar(1400.0)   # usa saldo + limite
+cc.sacar(200.0)    # saldo insuficiente
+cc.sacar(0)        # inválido
+cc.ver_extrato()
+print(cc)
+
+# Testes ContaPoupanca
+cp = ContaPoupanca(1002, "Carlos", 2000.0)
+cp.depositar(500.0)
+cp.sacar(100.0)
+cp.sacar(5000.0)   # saldo insuficiente
+cp.aplicarRendimento()
+cp.ver_extrato()
+print(cp)
      
